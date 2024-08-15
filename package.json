@@ -1,7 +1,7 @@
 {
   "name": "unplugin-dist-zip-pack",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "packageManager": "pnpm@8.6.12",
   "description": "",
   "license": "MIT",
@@ -17,10 +17,13 @@
     "zip",
     "pack",
     "unplugin",
-    "vite",
+    "vue-cli",
     "webpack",
+    "vite",
     "rollup",
-    "transform"
+    "esbuild",
+    "nuxt",
+    "rspack"
   ],
   "exports": {
     ".": {

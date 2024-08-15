@@ -7,6 +7,7 @@
 
 <br />
 <p align='center'><i>powered by <a href="https://github.com/unjs/unplugin" target="_blank">unplugin</a></i></p>
+<p>通过JsZip将构建产物打包，支持Webpack、Vue-CLI、Vite、Rollup、esbuild、Astro、Nuxt、Rspack</p>
 <br />
 <p>
   Thanks <a href="https://github.com/7th-Cyborg/vite-plugin-zip-pack">7th-Cyborg/vite-plugin-zip-pack</a>
@@ -146,5 +147,26 @@ build({
   plugins: [zipPack()],
 });
 ```
+
+<br></details>
+
+<details>
+<summary>Nuxt</summary><br>
+
+```ts
+// nuxt.config.js
+export default defineNuxtConfig({
+  modules: [
+    [
+      "unplugin-dist-zip-pack/nuxt",
+      {
+        /* options */
+      },
+    ],
+  ],
+});
+```
+
+> This module works for both Nuxt 2 and [Nuxt Vite](https://github.com/nuxt/vite)
 
 <br></details>
