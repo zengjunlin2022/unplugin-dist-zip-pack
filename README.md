@@ -87,7 +87,7 @@ export default defineConfig({
 });
 ```
 
-`<br></details>`
+<br></details>
 
 <details>
 <summary>Rollup</summary><br>
@@ -105,7 +105,7 @@ export default {
 };
 ```
 
-`<br></details>`
+<br></details>
 
 <details>
 <summary>Webpack</summary><br>
@@ -122,7 +122,7 @@ module.exports = {
 };
 ```
 
-`<br></details>`
+<br></details>
 
 <details>
 <summary>Vue CLI</summary><br>
@@ -140,7 +140,7 @@ module.exports = {
 };
 ```
 
-`<br></details>`
+<br></details>
 
 <details>
 <summary>esbuild</summary><br>
@@ -155,7 +155,7 @@ build({
 });
 ```
 
-`<br></details>`
+<br></details>
 
 <details>
 <summary>Nuxt</summary><br>
@@ -176,4 +176,4 @@ export default defineNuxtConfig({
 
 > This module works for both Nuxt 2 and [Nuxt Vite](https://github.com/nuxt/vite)
 
-`<br></details>`
+<br></details>
