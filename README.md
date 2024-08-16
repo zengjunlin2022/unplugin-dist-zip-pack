@@ -1,16 +1,17 @@
 # unplugin-dist-zip-pack
 
 <p align='center'>
-  <a href="https://www.npmjs.com/package/unplugin-dist-zip-pack"><img src="https://img.shields.io/npm/v/unplugin-dist-zip-pack" /></a>
-  <a href="https://www.npmjs.com/package/unplugin-dist-zip-pack"><img src="https://img.shields.io/npm/dm/unplugin-dist-zip-pack" /></a>
+  <a href="https://www.npmjs.com/package/unplugin-dist-zip-pack" target="_blank"><img src="https://img.shields.io/npm/v/unplugin-dist-zip-pack" /></a>
+  <a href="https://www.npmjs.com/package/unplugin-dist-zip-pack" target="_blank"><img src="https://img.shields.io/npm/dm/unplugin-dist-zip-pack" /></a>
 </p>
 
 <br />
 <p align='center'><i>powered by <a href="https://github.com/unjs/unplugin" target="_blank">unplugin</a></i></p>
 <p>通过JsZip将构建产物打包，支持Webpack、Vue-CLI、Vite、Rollup、esbuild、Astro、Nuxt、Rspack</p>
+<p>A plugin for packaging the front-end build products through JsZip, which supports Webpack, Vue-CLI, Vite, Rollup, esbuild, Astro, Nuxt, and Rspack</p>
 <br />
 <p>
-  Thanks <a href="https://github.com/7th-Cyborg/vite-plugin-zip-pack">7th-Cyborg/vite-plugin-zip-pack</a>
+  Thanks <a href="https://github.com/7th-Cyborg/vite-plugin-zip-pack" target="_blank">7th-Cyborg/vite-plugin-zip-pack</a>
 </p>
 
 ## Install
