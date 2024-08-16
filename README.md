@@ -1,23 +1,29 @@
 # unplugin-dist-zip-pack
 
-<p align='center'>
-  <a href="https://www.npmjs.com/package/unplugin-dist-zip-pack" target="_blank"><img src="https://img.shields.io/npm/v/unplugin-dist-zip-pack" /></a>
-  <a href="https://www.npmjs.com/package/unplugin-dist-zip-pack" target="_blank"><img src="https://img.shields.io/npm/dm/unplugin-dist-zip-pack" /></a>
+通过 JsZip 将构建产物打包，支持 Webpack、Vue-CLI、Vite、Rollup、esbuild、Astro、Nuxt、Rspack。
+
+A plugin for packaging the front-end build products through JsZip, which supports Webpack, Vue-CLI, Vite, Rollup, esbuild, Astro, Nuxt, and Rspack.
+
+<p>
+<a href="https://www.npmjs.com/package/unplugin-dist-zip-pack" target="_blank"><img src="https://img.shields.io/npm/v/unplugin-dist-zip-pack" /></a>
+<a href="https://www.npmjs.com/package/unplugin-dist-zip-pack" target="_blank"><img src="https://img.shields.io/npm/dm/unplugin-dist-zip-pack" /></a>
+
 </p>
 
-<br />
-<p align='center'><i>powered by <a href="https://github.com/unjs/unplugin" target="_blank">unplugin</a></i></p>
-<p>通过JsZip将构建产物打包，支持Webpack、Vue-CLI、Vite、Rollup、esbuild、Astro、Nuxt、Rspack</p>
-<p>A plugin for packaging the front-end build products through JsZip, which supports Webpack, Vue-CLI, Vite, Rollup, esbuild, Astro, Nuxt, and Rspack</p>
-<br />
-<p>
-  Thanks <a href="https://github.com/7th-Cyborg/vite-plugin-zip-pack" target="_blank">7th-Cyborg/vite-plugin-zip-pack</a>
-</p>
+Power by [unplugin](https://github.com/unjs/unplugin)
+
+Thanks [7th-Cyborg/vite-plugin-zip-pack](https://github.com/7th-Cyborg/vite-plugin-zip-pack)
 
 ## Install
 
 ```bash
 npm i unplugin-dist-zip-pack
+```
+
+or
+
+```bash
+yarn add unplugin-dist-zip-pack
 ```
 
 ## Options
@@ -81,7 +87,7 @@ export default defineConfig({
 });
 ```
 
-<br></details>
+`<br></details>`
 
 <details>
 <summary>Rollup</summary><br>
@@ -99,7 +105,7 @@ export default {
 };
 ```
 
-<br></details>
+`<br></details>`
 
 <details>
 <summary>Webpack</summary><br>
@@ -116,7 +122,7 @@ module.exports = {
 };
 ```
 
-<br></details>
+`<br></details>`
 
 <details>
 <summary>Vue CLI</summary><br>
@@ -134,7 +140,7 @@ module.exports = {
 };
 ```
 
-<br></details>
+`<br></details>`
 
 <details>
 <summary>esbuild</summary><br>
@@ -149,7 +155,7 @@ build({
 });
 ```
 
-<br></details>
+`<br></details>`
 
 <details>
 <summary>Nuxt</summary><br>
@@ -170,4 +176,4 @@ export default defineNuxtConfig({
 
 > This module works for both Nuxt 2 and [Nuxt Vite](https://github.com/nuxt/vite)
 
-<br></details>
+`<br></details>`
