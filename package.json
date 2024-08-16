@@ -1,14 +1,14 @@
 {
   "name": "unplugin-dist-zip-pack",
   "type": "module",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "packageManager": "pnpm@8.6.12",
   "description": "A plugin for packaging the front-end build products through JsZip, which supports Webpack, Vue-CLI, Vite, Rollup, esbuild, Astro, Nuxt, and Rspack",
   "license": "MIT",
   "homepage": "https://github.com/zengjunlin2022/unplugin-dist-zip-pack#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zengjunlin2022/unplugin-dist-zip-pack.git"
+    "url": "git+https://github.com/zengjunlin2022/unplugin-dist-zip-pack"
   },
   "bugs": {
     "url": "https://github.com/zengjunlin2022/unplugin-dist-zip-pack/issues"
@@ -134,7 +134,7 @@
     "@nuxt/kit": "^3.8.2",
     "@nuxt/schema": "^3.8.2",
     "@types/node": "^20.10.3",
-    "bumpp": "^9.2.0",
+    "bumpp": "^9.5.1",
     "chalk": "^5.3.0",
     "eslint": "^8.55.0",
     "esno": "^4.0.0",
