@@ -12,8 +12,6 @@ A plugin for packaging the front-end build products through JsZip, which support
 
 Power by [unplugin](https://github.com/unjs/unplugin)
 
-Thanks [7th-Cyborg/vite-plugin-zip-pack](https://github.com/7th-Cyborg/vite-plugin-zip-pack)
-
 ## Install
 
 ```bash
