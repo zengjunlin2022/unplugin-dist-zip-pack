@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.1.6",
   "packageManager": "pnpm@8.6.7",
-  "description": "A plugin for packaging the front-end build products through JsZip, which supports Webpack, Vue-CLI, Vite, Rollup, esbuild, Astro, Nuxt, and Rspack",
+  "description": "Package the build products and support Webpack, Vue-CLI, Vite, Rollup, esbuild, Astro, Nuxt, and Rspack. Support adding passwords to the packaged zip files.",
   "license": "MIT",
   "homepage": "https://github.com/zengjunlin2022/unplugin-dist-zip-pack#readme",
   "repository": {
