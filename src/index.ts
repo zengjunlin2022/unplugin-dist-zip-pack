@@ -5,7 +5,13 @@ import type { Options } from "./types";
 import { promises as fsPromises, existsSync } from "fs";
 import { join, isAbsolute, sep } from "path";
 
-import * as zip from "@zip.js/zip.js";
+import {
+  ZipWriter,
+  BlobWriter,
+  getMimeType,
+  BlobReader,
+  ZipWriterConstructorOptions,
+} from "@zip.js/zip.js";
 
 const DEFAULT_OPTIONS = {
   inDir: "dist",
@@ -18,7 +24,7 @@ const DEFAULT_OPTIONS = {
 };
 
 async function addFilesToZipWriter(
-  zipWriter: zip.ZipWriter<Blob>,
+  zipWriter: ZipWriter<Blob>,
   inDir: string,
   pathPrefix: string,
   filter: Function
@@ -37,11 +43,11 @@ async function addFilesToZipWriter(
       if (filter(fileName, filePath, false)) {
         const fileBuffer: Buffer = await fsPromises.readFile(filePath);
         const fileBlob = new Blob([fileBuffer], {
-          type: zip.getMimeType(fileName),
+          type: getMimeType(fileName),
         });
         let _filePath = removePathLevel(filePath, 0);
         let zipFilePath = pathPrefix ? join(pathPrefix, _filePath) : _filePath;
-        zipWriter.add(zipFilePath, new zip.BlobReader(fileBlob));
+        zipWriter.add(zipFilePath, new BlobReader(fileBlob));
       }
     }
   }
@@ -101,12 +107,12 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (
         if (pathPrefix && isAbsolute(pathPrefix))
           throw new Error('"pathPrefix" must be a relative path');
 
-        let zipWriterOpts: zip.ZipWriterConstructorOptions = {};
+        let zipWriterOpts: ZipWriterConstructorOptions = {};
         if (password) {
           zipWriterOpts.password = password;
         }
-        const zipWriter: zip.ZipWriter<Blob> = new zip.ZipWriter(
-          new zip.BlobWriter("application/zip"),
+        const zipWriter: ZipWriter<Blob> = new ZipWriter(
+          new BlobWriter("application/zip"),
           zipWriterOpts
         );
         isCompress = true;
