@@ -37,8 +37,8 @@ export interface Options {
     isDirectory: boolean
   ) => boolean;
   /**
-   * Enable logging
-   * @default true
+   * Password for the zip file
+   * @default undefined
    */
-  enableLogging?: boolean;
+  password?: string;
 }

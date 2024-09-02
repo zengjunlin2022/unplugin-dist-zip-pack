@@ -126,9 +126,8 @@
     }
   },
   "dependencies": {
-    "jszip": "^3.10.1",
-    "unplugin": "^1.5.1",
-    "@zip.js/zip.js": "2.7.52"
+    "@zip.js/zip.js": "2.7.52",
+    "unplugin": "^1.5.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.2.2",

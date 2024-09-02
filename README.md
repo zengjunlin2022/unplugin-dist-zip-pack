@@ -1,16 +1,15 @@
 # unplugin-dist-zip-pack
 
-通过 JsZip 将构建产物打包，支持 Webpack、Vue-CLI、Vite、Rollup、esbuild、Astro、Nuxt、Rspack。
+将构建产物打包。
+支持 Webpack、Vue-CLI、Vite、Rollup、esbuild、Astro、Nuxt、Rspack。支持对打包后的 zip 文件加密码。
 
-A plugin for packaging the front-end build products through JsZip, which supports Webpack, Vue-CLI, Vite, Rollup, esbuild, Astro, Nuxt, and Rspack.
+Package the build products and support Webpack, Vue-CLI, Vite, Rollup, esbuild, Astro, Nuxt, and Rspack. Support adding passwords to the packaged zip files.
 
 <p>
 <a href="https://www.npmjs.com/package/unplugin-dist-zip-pack" target="_blank"><img src="https://img.shields.io/npm/v/unplugin-dist-zip-pack" /></a>
 <a href="https://www.npmjs.com/package/unplugin-dist-zip-pack" target="_blank"><img src="https://img.shields.io/npm/dm/unplugin-dist-zip-pack" /></a>
 
 </p>
-
-Power by [unplugin](https://github.com/unjs/unplugin)
 
 ## Install
 
@@ -52,7 +51,7 @@ export interface Options {
    * Callback, which is executed after the zip file was created
    * err is only defined if the save function fails
    */
-  done?: (err: Error | undefined) => void
+  done?: (err: Error | undefined) => void;
   /**
    * Filter function equivalent to Array.prototype.filter
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
@@ -60,17 +59,20 @@ export interface Options {
    * files and directories are only included when return ist true.
    * All files are included when function is not defined
    */
-  filter?: (fileName: string, filePath: string, isDirectory: boolean) => Boolean
+  filter?: (
+    fileName: string,
+    filePath: string,
+    isDirectory: boolean
+  ) => boolean;
   /**
-   * Enable logging
-   * @default true
+   * Password for the zip file
+   * @default undefined
    */
-  enableLogging?: boolean;
+  password?: string;
 }
 ```
 
-<details>
-<summary>Vite</summary><br>
+### Vite
 
 ```ts
 // vite.config.ts
@@ -85,10 +87,7 @@ export default defineConfig({
 });
 ```
 
-<br></details>
-
-<details>
-<summary>Rollup</summary><br>
+### Rollup
 
 ```ts
 // rollup.config.js
@@ -103,10 +102,7 @@ export default {
 };
 ```
 
-<br></details>
-
-<details>
-<summary>Webpack</summary><br>
+### Webpack
 
 ```ts
 // webpack.config.js
@@ -120,10 +116,7 @@ module.exports = {
 };
 ```
 
-<br></details>
-
-<details>
-<summary>Vue CLI</summary><br>
+### Vue CLI
 
 ```ts
 // vue.config.js
@@ -138,10 +131,7 @@ module.exports = {
 };
 ```
 
-<br></details>
-
-<details>
-<summary>esbuild</summary><br>
+### esbuild
 
 ```ts
 // esbuild.config.js
@@ -153,10 +143,7 @@ build({
 });
 ```
 
-<br></details>
-
-<details>
-<summary>Nuxt</summary><br>
+### Nuxt
 
 ```ts
 // nuxt.config.js
@@ -174,4 +161,7 @@ export default defineNuxtConfig({
 
 > This module works for both Nuxt 2 and [Nuxt Vite](https://github.com/nuxt/vite)
 
-<br></details>
+### Thanks
+
+- [unplugin](https://github.com/unjs/unplugin)
+- [zip.js](https://gildas-lormeau.github.io/zip.js/)

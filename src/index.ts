@@ -3,12 +3,9 @@ import type { UnpluginFactory } from "unplugin";
 import type { Options } from "./types";
 
 import { promises as fsPromises, existsSync } from "fs";
-import { join, isAbsolute } from "path";
-import JSZip from "jszip";
+import { join, isAbsolute, sep } from "path";
 
-function timeZoneOffset(date: Date): Date {
-  return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-}
+import * as zip from "@zip.js/zip.js";
 
 const DEFAULT_OPTIONS = {
   inDir: "dist",
@@ -17,16 +14,13 @@ const DEFAULT_OPTIONS = {
   pathPrefix: "",
   done: () => {},
   filter: () => true,
-  enableLogging: true,
+  password: undefined,
 };
 
-function logMessage(color: string, message: string) {
-  console.log(`\x1b[${color}%s\x1b[0m`, message);
-}
-
-async function addFilesToZipArchive(
-  zip: JSZip,
+async function addFilesToZipWriter(
+  zipWriter: zip.ZipWriter<Blob>,
   inDir: string,
+  pathPrefix: string,
   filter: Function
 ) {
   const listOfFiles = await fsPromises.readdir(inDir);
@@ -34,44 +28,52 @@ async function addFilesToZipArchive(
   for (const fileName of listOfFiles) {
     const filePath = join(inDir, fileName);
     const file = await fsPromises.stat(filePath);
-    const timeZoneOffsetDate = timeZoneOffset(new Date(file.mtime));
 
     if (file.isDirectory()) {
       if (!filter(fileName, filePath, true)) continue;
-      zip.file(fileName, null, { dir: true, date: timeZoneOffsetDate });
-      const dir = zip.folder(fileName);
-      if (!dir)
-        throw new Error(
-          `fileName '${fileName}' couldn't get included as directory in the zip`
-        );
-      await addFilesToZipArchive(dir, filePath, filter);
+      // 迭代下一級目錄
+      await addFilesToZipWriter(zipWriter, filePath, pathPrefix, filter);
     } else {
       if (filter(fileName, filePath, false)) {
-        zip.file(fileName, await fsPromises.readFile(filePath), {
-          date: timeZoneOffsetDate,
+        const fileBuffer: Buffer = await fsPromises.readFile(filePath);
+        const fileBlob = new Blob([fileBuffer], {
+          type: zip.getMimeType(fileName),
         });
+        let _filePath = removePathLevel(filePath, 0);
+        let zipFilePath = pathPrefix ? join(pathPrefix, _filePath) : _filePath;
+        zipWriter.add(zipFilePath, new zip.BlobReader(fileBlob));
       }
     }
   }
 }
+function removePathLevel(filePath: string, levelToRemove: number): string {
+  // 将路径解析为各个部分
+  const parts = filePath.split(sep);
 
-async function createZipArchive(
-  zip: JSZip,
+  // 检查要删除的级别是否在有效范围内
+  if (levelToRemove < 0 || levelToRemove >= parts.length) {
+    throw new Error("Invalid level to remove");
+  }
+
+  // 删除指定级别的路径部分
+  parts.splice(levelToRemove, 1);
+
+  // 重新组合路径
+  return parts.join(sep);
+}
+
+async function createZipFile(
+  file: Blob,
   outDir: string,
   outFileName: string,
   done: Function
 ) {
-  // @ts-ignore
-  zip.root = "";
-  const file: Buffer = await zip.generateAsync({
-    type: "nodebuffer",
-    compression: "DEFLATE",
-    compressionOptions: { level: 9 },
-  });
+  // Blob to ArrayBuffer
+  const zipfile: ArrayBuffer = await file.arrayBuffer();
   const fileName = join(outDir, outFileName);
 
   if (existsSync(fileName)) await fsPromises.unlink(fileName);
-  await fsPromises.writeFile(fileName, new Uint8Array(file));
+  await fsPromises.writeFile(fileName, new Uint8Array(zipfile));
   done(undefined);
 }
 
@@ -80,22 +82,17 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (
 ) => ({
   name: "unplugin-dist-zip-pack",
   buildEnd: async () => {
-    const {
-      inDir,
-      outDir,
-      outFileName,
-      pathPrefix,
-      done,
-      filter,
-      enableLogging,
-    } = { ...DEFAULT_OPTIONS, ...options };
+    const { inDir, outDir, outFileName, pathPrefix, done, filter, password } = {
+      ...DEFAULT_OPTIONS,
+      ...options,
+    };
     let isCompress = false;
 
     process.on("beforeExit", async () => {
       if (isCompress) return;
 
       try {
-        logMessage("36", `Zip packing - "${inDir}" folder :`);
+        console.log(`Zip packing - "${inDir}" folder`);
 
         if (!existsSync(inDir))
           throw new Error(` - "${inDir}" folder does not exist!`);
@@ -104,23 +101,25 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (
         if (pathPrefix && isAbsolute(pathPrefix))
           throw new Error('"pathPrefix" must be a relative path');
 
-        const zip = new JSZip();
-        const archive = pathPrefix ? zip.folder(pathPrefix) || zip : zip;
-
-        if (enableLogging) logMessage("32", "  - Preparing files.");
-        isCompress = true;
-        await addFilesToZipArchive(archive, inDir, filter);
-
-        if (enableLogging) logMessage("32", "  - Creating zip archive.");
-        await createZipArchive(archive, outDir, outFileName, done);
-
-        logMessage(
-          "32",
-          enableLogging ? "  - Done." : "  - Created zip archive."
+        let zipWriterOpts: zip.ZipWriterConstructorOptions = {};
+        if (password) {
+          zipWriterOpts.password = password;
+        }
+        const zipWriter: zip.ZipWriter<Blob> = new zip.ZipWriter(
+          new zip.BlobWriter("application/zip"),
+          zipWriterOpts
         );
+        isCompress = true;
+
+        // 遍歷目錄
+        await addFilesToZipWriter(zipWriter, inDir, pathPrefix, filter);
+        let result = await zipWriter.close();
+        console.log("Creating zip archive.");
+        await createZipFile(result, outDir, outFileName, done);
+        console.log("Zip packing done.");
       } catch (error: any) {
-        logMessage("31", `  - ${error}`);
-        logMessage("31", "  - Something went wrong while building zip file!");
+        console.error(`Zip packing failed.`);
+        console.error(`${error}`);
         done(error);
       }
     });
