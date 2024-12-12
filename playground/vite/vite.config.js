@@ -19,6 +19,7 @@ export default defineConfig({
         }
         return true;
       },
+      subDirAsRoot: './dist/subdir'
     }),
   ],
 });

@@ -21,13 +21,15 @@ const DEFAULT_OPTIONS = {
   done: () => {},
   filter: () => true,
   password: undefined,
+  subDirAsRoot: undefined,
 };
 
 async function addFilesToZipWriter(
   zipWriter: ZipWriter<Blob>,
   inDir: string,
   pathPrefix: string,
-  filter: Function
+  filter: Function,
+  subDirAsRoot?: string
 ) {
   const listOfFiles = await fsPromises.readdir(inDir);
 
@@ -38,7 +40,7 @@ async function addFilesToZipWriter(
     if (file.isDirectory()) {
       if (!filter(fileName, filePath, true)) continue;
       // 迭代下一級目錄
-      await addFilesToZipWriter(zipWriter, filePath, pathPrefix, filter);
+      await addFilesToZipWriter(zipWriter, filePath, pathPrefix, filter, subDirAsRoot);
     } else {
       if (filter(fileName, filePath, false)) {
         const fileBuffer: Buffer = await fsPromises.readFile(filePath);
@@ -46,6 +48,9 @@ async function addFilesToZipWriter(
           type: getMimeType(fileName),
         });
         let _filePath = removePathLevel(filePath, 0);
+        if (subDirAsRoot && filePath.startsWith(subDirAsRoot)) {
+          _filePath = filePath.substring(subDirAsRoot.length + 1);
+        }
         let zipFilePath = pathPrefix ? join(pathPrefix, _filePath) : _filePath;
         zipWriter.add(zipFilePath, new BlobReader(fileBlob));
       }
@@ -88,7 +93,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (
 ) => ({
   name: "unplugin-dist-zip-pack",
   buildEnd: async () => {
-    const { inDir, outDir, outFileName, pathPrefix, done, filter, password } = {
+    const { inDir, outDir, outFileName, pathPrefix, done, filter, password, subDirAsRoot } = {
       ...DEFAULT_OPTIONS,
       ...options,
     };
@@ -118,7 +123,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (
         isCompress = true;
 
         // 遍歷目錄
-        await addFilesToZipWriter(zipWriter, inDir, pathPrefix, filter);
+        await addFilesToZipWriter(zipWriter, inDir, pathPrefix, filter, subDirAsRoot);
         let result = await zipWriter.close();
         console.log("Creating zip archive.");
         await createZipFile(result, outDir, outFileName, done);
