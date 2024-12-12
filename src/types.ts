@@ -41,4 +41,9 @@ export interface Options {
    * @default undefined
    */
   password?: string;
+  /**
+   * Subdirectory to be used as the root directory of the packaged output
+   * @default undefined
+   */
+  subDirAsRoot?: string;
 }
